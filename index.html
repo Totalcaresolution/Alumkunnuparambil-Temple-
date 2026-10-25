@@ -1,0 +1,1462 @@
+```html
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ആലുംകുന്നുപറമ്പിൽ ക്ഷേത്രം - മാസവരിസംഖ്യ & കണക്ക് ബുക്ക്</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Manjari & Gayathri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gayathri:wght@400;700&family=Manjari:wght@400;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        templeGold: '#D4AF37',
+                        templeGoldDark: '#B8860B',
+                        templeMaroon: '#7A0C0C',
+                        templeRed: '#900C3F',
+                        templeBrass: '#C5A059',
+                        templeCream: '#FAF6EF',
+                        templeDark: '#220909',
+                    },
+                    fontFamily: {
+                        malayalam: ['Manjari', 'Gayathri', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Manjari', 'Gayathri', sans-serif;
+            background-color: #FAF6EF;
+            color: #220909;
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+        }
+        .maroon-gradient {
+            background: linear-gradient(135deg, #7A0C0C 0%, #4A0505 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 15px -2px rgba(122, 12, 12, 0.08), 0 2px 6px -1px rgba(184, 134, 11, 0.12);
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white; color: black; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- HEADER / ക്ഷേത്രം തലക്കെട്ട് -->
+    <header class="maroon-gradient text-white border-b-4 border-templeGold shadow-lg no-print">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-4 space-x-reverse text-center md:text-left">
+                <div class="w-14 h-14 rounded-full gold-gradient p-1 flex items-center justify-center shadow-md flex-shrink-0">
+                    <div class="w-full h-full bg-templeMaroon rounded-full flex items-center justify-center text-templeGold text-2xl font-bold">
+                        🛕
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-wide text-amber-100">ആലുംകുന്നുപറമ്പിൽ ക്ഷേത്രം</h1>
+                    <p class="text-xs sm:text-sm text-templeGold font-medium">കുടുംബക്ഷേത്ര കണക്ക് പുസ്തകം & മാസവരിസംഖ്യ (₹300) മാനേജ്‌മെന്റ്</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                <button onclick="openSubscriptionPayModal()" class="bg-amber-100 text-templeMaroon font-bold px-3 py-2 rounded-lg shadow-md hover:bg-white transition flex items-center gap-1.5 text-xs sm:text-sm">
+                    <i class="fa-solid fa-hand-holding-dollar text-emerald-700"></i>
+                    <span>വരിസംഖ്യ അടക്കുക (₹300/മാസം)</span>
+                </button>
+                <button onclick="openTransactionModal()" class="gold-gradient text-templeDark font-bold px-3 py-2 rounded-lg shadow-md hover:brightness-110 transition flex items-center gap-1.5 text-xs sm:text-sm">
+                    <i class="fa-solid fa-plus-circle text-templeMaroon"></i>
+                    <span>മറ്റ് വരവ് / ചെലവ്</span>
+                </button>
+                <button onclick="window.print()" class="bg-templeMaroon border border-templeGold text-templeGold px-3 py-2 rounded-lg hover:bg-red-950 transition text-xs sm:text-sm">
+                    <i class="fa-solid fa-print"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <div class="bg-white border-b border-amber-200 sticky top-0 z-10 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-2 sm:space-x-4 overflow-x-auto py-2">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active text-templeMaroon font-bold border-b-2 border-templeMaroon px-3 py-2 text-sm flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-chart-pie"></i> ഡാഷ്‌ബോർഡ്
+            </button>
+            <button onclick="switchTab('subscription')" id="tab-subscription" class="tab-btn text-gray-600 font-semibold border-b-2 border-transparent hover:text-templeMaroon px-3 py-2 text-sm flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-calendar-check text-emerald-600"></i> വരിസംഖ്യ ട്രാക്കർ (കുടിശ്ശിക / മുൻകൂർ)
+            </button>
+            <button onclick="switchTab('transactions')" id="tab-transactions" class="tab-btn text-gray-600 font-semibold border-b-2 border-transparent hover:text-templeMaroon px-3 py-2 text-sm flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-list-check"></i> വരവ് - ചെലവ് ബുക്ക്
+            </button>
+            <button onclick="switchTab('members')" id="tab-members" class="tab-btn text-gray-600 font-semibold border-b-2 border-transparent hover:text-templeMaroon px-3 py-2 text-sm flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-users"></i> കുടുംബങ്ങൾ & ലെഡ്ജർ
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- DASHBOARD TAB -->
+        <section id="sec-dashboard" class="space-y-6">
+            <!-- SUMMARY CARDS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- Total Income -->
+                <div class="bg-white rounded-xl p-5 border-l-4 border-emerald-600 card-shadow flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-medium">ആകെ വരവ് (Total Income)</p>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-emerald-700 mt-1" id="dash-total-income">₹0</h2>
+                        <span class="text-xs text-emerald-600 font-semibold mt-1 inline-block"><i class="fa-solid fa-arrow-trend-up"></i> എല്ലാ വരവുകളും</span>
+                    </div>
+                    <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-lg">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                    </div>
+                </div>
+
+                <!-- Total Expense -->
+                <div class="bg-white rounded-xl p-5 border-l-4 border-rose-600 card-shadow flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-medium">ആകെ ചെലവ് (Total Expense)</p>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-rose-700 mt-1" id="dash-total-expense">₹0</h2>
+                        <span class="text-xs text-rose-600 font-semibold mt-1 inline-block"><i class="fa-solid fa-arrow-trend-down"></i> പൂജ, അറ്റകുറ്റപ്പണി</span>
+                    </div>
+                    <div class="w-10 h-10 bg-rose-100 rounded-full flex items-center justify-center text-rose-600 text-lg">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                </div>
+
+                <!-- Net Balance -->
+                <div class="bg-white rounded-xl p-5 border-l-4 border-templeGoldDark card-shadow flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-medium">ബാക്കി തുക (Net Balance)</p>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-amber-900 mt-1" id="dash-net-balance">₹0</h2>
+                        <span class="text-xs text-amber-700 font-semibold mt-1 inline-block"><i class="fa-solid fa-vault"></i> നിലവിലെ നീക്കിയിരിപ്പ്</span>
+                    </div>
+                    <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-800 text-lg">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                </div>
+
+                <!-- Monthly Sub Progress -->
+                <div class="bg-white rounded-xl p-5 border-l-4 border-amber-600 card-shadow flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-500 font-medium">ഈ വർഷത്തെ കുടിശ്ശിക</p>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-rose-700 mt-1" id="dash-sub-arrears">₹0</h2>
+                        <span class="text-xs text-teal-700 font-semibold mt-1 inline-block" id="dash-sub-advance-text">മുൻകൂർ അടച്ചത്: ₹0</span>
+                    </div>
+                    <div class="w-10 h-10 bg-rose-100 rounded-full flex items-center justify-center text-rose-800 text-lg">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENT TRANSACTIONS & BREAKDOWN -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Recent Transactions -->
+                <div class="lg:col-span-2 bg-white rounded-xl p-5 card-shadow border border-amber-100">
+                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-amber-100">
+                        <h3 class="text-base font-bold text-templeMaroon flex items-center gap-2">
+                            <i class="fa-solid fa-clock-rotate-left text-templeGoldDark"></i> അവസാനത്തെ ഇടപാടുകൾ (Recent Transactions)
+                        </h3>
+                        <button onclick="switchTab('transactions')" class="text-xs text-templeMaroon font-bold hover:underline">എല്ലാം കാണുക →</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="bg-amber-50 text-templeDark font-bold">
+                                <tr>
+                                    <th class="p-2.5">തീയതി</th>
+                                    <th class="p-2.5">വിഭാഗം</th>
+                                    <th class="p-2.5">പേര്/വീട്ടുപേര്</th>
+                                    <th class="p-2.5 text-right">തുക (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dash-recent-tbody" class="divide-y divide-gray-100">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Income Category Breakdown -->
+                <div class="bg-white rounded-xl p-5 card-shadow border border-amber-100">
+                    <h3 class="text-base font-bold text-templeMaroon mb-4 pb-2 border-b border-amber-100 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-templeGoldDark"></i> വരവ് വിശകലനം (Income Breakup)
+                    </h3>
+                    <div id="category-breakdown" class="space-y-3">
+                        <!-- Dynamic items -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUBSCRIPTION TRACKER TAB (₹300/MONTH WITH ADVANCE & ARREARS) -->
+        <section id="sec-subscription" class="space-y-6 hidden">
+            <div class="bg-white p-5 rounded-xl card-shadow border border-amber-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-xl font-bold text-templeMaroon">കുടുംബ മാസവരിസംഖ്യ ട്രാക്കർ</h2>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full border border-emerald-300">₹300 / മാസം</span>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-1">കുടിശ്ശിക, മുൻകൂർ തുക എന്നിവ ഓട്ടോമാറ്റിക്കായി വിഭജിച്ച് രേഖപ്പെടുത്തുന്നു.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <select id="sub-year-select" onchange="renderSubscriptionGrid()" class="p-2 text-xs sm:text-sm border border-amber-300 rounded-lg font-bold text-templeMaroon bg-amber-50">
+                        <option value="2026">വർഷം: 2026</option>
+                        <option value="2025">വർഷം: 2025</option>
+                    </select>
+                    <button onclick="openSubscriptionPayModal()" class="maroon-gradient text-white text-xs sm:text-sm px-4 py-2 rounded-lg font-bold shadow hover:brightness-110">
+                        <i class="fa-solid fa-plus-circle mr-1"></i> വരിസംഖ്യ അടക്കുക (Bulk/Single)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Summary Bar -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-xl card-shadow border-l-4 border-blue-500">
+                    <p class="text-xs text-gray-500 font-semibold">പ്രതീക്ഷിക്കുന്ന വരിസംഖ്യ</p>
+                    <h3 class="text-xl font-bold text-blue-900 mt-0.5" id="sub-summary-target">₹0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-xl card-shadow border-l-4 border-emerald-500">
+                    <p class="text-xs text-gray-500 font-semibold">ശേഖരിച്ചത് (Collected)</p>
+                    <h3 class="text-xl font-bold text-emerald-700 mt-0.5" id="sub-summary-collected">₹0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-xl card-shadow border-l-4 border-rose-500">
+                    <p class="text-xs text-gray-500 font-semibold">നിലവിലെ കുടിശ്ശിക (Arrears)</p>
+                    <h3 class="text-xl font-bold text-rose-700 mt-0.5" id="sub-summary-arrears">₹0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-xl card-shadow border-l-4 border-teal-500">
+                    <p class="text-xs text-gray-500 font-semibold">മുൻകൂർ ലഭിച്ചത് (Advance)</p>
+                    <h3 class="text-xl font-bold text-teal-700 mt-0.5" id="sub-summary-advance">₹0</h3>
+                </div>
+            </div>
+
+            <!-- Month-by-Month Grid Matrix -->
+            <div class="bg-white rounded-xl card-shadow border border-amber-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-templeMaroon text-white font-bold text-center">
+                                <th class="p-3 text-left min-w-[160px]">കുടുംബം / വീട്ടുപേര്</th>
+                                <th class="p-2 min-w-[60px]">Jan</th>
+                                <th class="p-2 min-w-[60px]">Feb</th>
+                                <th class="p-2 min-w-[60px]">Mar</th>
+                                <th class="p-2 min-w-[60px]">Apr</th>
+                                <th class="p-2 min-w-[60px]">May</th>
+                                <th class="p-2 min-w-[60px]">Jun</th>
+                                <th class="p-2 min-w-[60px]">Jul</th>
+                                <th class="p-2 min-w-[60px]">Aug</th>
+                                <th class="p-2 min-w-[60px]">Sep</th>
+                                <th class="p-2 min-w-[60px]">Oct</th>
+                                <th class="p-2 min-w-[60px]">Nov</th>
+                                <th class="p-2 min-w-[60px]">Dec</th>
+                                <th class="p-3 text-right min-w-[100px]">സ്റ്റാറ്റസ്</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subscription-grid-tbody" class="divide-y divide-gray-200">
+                            <!-- Dynamic Matrix Rows -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-3 bg-amber-50 text-xs text-gray-700 flex flex-wrap gap-4 justify-between items-center">
+                    <div class="flex flex-wrap items-center gap-3 font-semibold">
+                        <span class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-500 rounded-full inline-block"></span> നൽകി (Paid)</span>
+                        <span class="flex items-center gap-1"><span class="w-3 h-3 bg-teal-500 rounded-full inline-block"></span> മുൻകൂർ നൽകി (Advance)</span>
+                        <span class="flex items-center gap-1"><span class="w-3 h-3 bg-rose-500 rounded-full inline-block"></span> കുടിശ്ശിക (Arrears)</span>
+                        <span class="flex items-center gap-1"><span class="w-3 h-3 bg-gray-300 rounded-full inline-block"></span> വരാനുള്ള മാസം (Upcoming)</span>
+                    </div>
+                    <span class="font-bold text-templeMaroon">* ഏതെങ്കിലും കട്ടത്തിൽ ക്ലിക്ക് ചെയ്താലോ കുടുംബത്തിന്റെ പേരിൽ തൊട്ടാലോ വിശദ ലെഡ്ജർ തുറക്കാം.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRANSACTIONS TAB -->
+        <section id="sec-transactions" class="space-y-6 hidden">
+            <!-- FILTERS AND SEARCH -->
+            <div class="bg-white p-4 sm:p-5 rounded-xl card-shadow border border-amber-100 space-y-4 no-print">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <h2 class="text-xl font-bold text-templeMaroon">വരവു-ചെലവ് റിപ്പോർട്ടുകൾ</h2>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="exportCSV()" class="bg-emerald-700 text-white text-xs sm:text-sm px-3 py-2 rounded-lg font-semibold hover:bg-emerald-800 transition">
+                            <i class="fa-solid fa-file-excel mr-1"></i> CSV എക്സ്പോർട്ട്
+                        </button>
+                        <button onclick="openTransactionModal()" class="gold-gradient text-templeDark text-xs sm:text-sm px-4 py-2 rounded-lg font-bold shadow hover:brightness-105 transition">
+                            <i class="fa-solid fa-plus mr-1"></i> പുതിയ കണക്ക്
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">തിരച്ചിൽ (Search)</label>
+                        <input type="text" id="filter-search" oninput="applyFilters()" placeholder="പേര്, വീട്ടുപേര്, വിവരണം..." class="w-full p-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-templeMaroon focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">ഇനം (Type)</label>
+                        <select id="filter-type" onchange="applyFilters()" class="w-full p-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-templeMaroon focus:outline-none">
+                            <option value="ALL">എല്ലാം (All)</option>
+                            <option value="INCOME">വരവ് (Income)</option>
+                            <option value="EXPENSE">ചെലവ് (Expense)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">വിഭാഗം (Category)</label>
+                        <select id="filter-category" onchange="applyFilters()" class="w-full p-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-templeMaroon focus:outline-none">
+                            <option value="ALL">എല്ലാ വിഭാഗവും</option>
+                            <option value="മാസവരിസംഖ്യ">മാസവരിസംഖ്യ (₹300)</option>
+                            <option value="പൂജ വഴിപാട്">പൂജ വഴിപാട്</option>
+                            <option value="സംഭാവന">സംഭാവന</option>
+                            <option value="ഉത്സവം/വിശേഷം">ഉത്സവം/വിശേഷം</option>
+                            <option value="പൂജ സാമഗ്രികൾ">പൂജ സാമഗ്രികൾ</option>
+                            <option value="വേതനം">ജീവനക്കാരുടെ വേതനം</option>
+                            <option value="അറ്റകുറ്റപ്പണി/വൈദ്യുതി">അറ്റകുറ്റപ്പണി/വൈദ്യുതി</option>
+                            <option value="മറ്റ് ചെലവുകൾ">മറ്റ് ചെലവുകൾ</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">മാസം (Month)</label>
+                        <input type="month" id="filter-month" onchange="applyFilters()" class="w-full p-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-templeMaroon focus:outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRINT HEADER -->
+            <div class="hidden print-only text-center mb-6">
+                <h1 class="text-2xl font-bold text-templeMaroon">ആലുംകുന്നുപറമ്പിൽ ക്ഷേത്രം</h1>
+                <p class="text-sm text-gray-600">ധനകാര്യ വരവ് ചെലവ് വിവരങ്ങൾ</p>
+                <hr class="my-2 border-amber-800">
+            </div>
+
+            <!-- TRANSACTIONS TABLE -->
+            <div class="bg-white rounded-xl card-shadow overflow-hidden border border-amber-100">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-templeMaroon text-white text-xs sm:text-sm font-bold">
+                                <th class="p-3">തീയതി</th>
+                                <th class="p-3">ഇനം</th>
+                                <th class="p-3">വിഭാഗം</th>
+                                <th class="p-3">പേര് / വീട്ടുപേര്</th>
+                                <th class="p-3">വിവരണം</th>
+                                <th class="p-3 text-right">തുക (₹)</th>
+                                <th class="p-3 text-center no-print">പ്രവർത്തനങ്ങൾ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-tbody" class="divide-y divide-gray-200 text-xs sm:text-sm">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="no-records" class="hidden text-center py-8 text-gray-500">
+                    <i class="fa-solid fa-circle-exclamation text-3xl mb-2 text-amber-500"></i>
+                    <p>വിവരങ്ങളൊന്നും കണ്ടെത്താനായില്ല!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MEMBERS TAB -->
+        <section id="sec-members" class="space-y-6 hidden">
+            <div class="bg-white p-5 rounded-xl card-shadow border border-amber-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-templeMaroon">കുടുംബാംഗങ്ങൾ & ലെഡ്ജർ</h2>
+                    <p class="text-xs text-gray-600">ഓരോ കുടുംബത്തിന്റെയും അടവ് വിവരങ്ങൾ, കുടിശ്ശിക, ലെഡ്ജർ സ്റ്റേറ്റ്‌മെന്റ്</p>
+                </div>
+                <button onclick="openMemberModal()" class="bg-templeMaroon text-templeGold font-bold px-4 py-2 rounded-lg text-xs sm:text-sm hover:bg-red-950 transition">
+                    <i class="fa-solid fa-user-plus mr-1"></i> പുതിയ കുടുംബത്തെ ചേർക്കുക
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="members-grid">
+                <!-- Dynamic Member Cards -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-templeDark text-templeGold text-center py-4 border-t-2 border-templeGold mt-auto no-print">
+        <p class="text-xs">© ആലുംകുന്നുപറമ്പിൽ ക്ഷേത്രം കുടുംബ സമിതി. എല്ലാ അവകാശങ്ങളും സംരക്ഷിതം.</p>
+    </footer>
+
+    <!-- ADD/EDIT TRANSACTION MODAL -->
+    <div id="modal-transaction" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border-2 border-templeGold">
+            <div class="maroon-gradient p-4 text-white flex justify-between items-center">
+                <h3 class="font-bold text-base sm:text-lg" id="modal-tx-title">പുതിയ കണക്ക് ചേർക്കുക</h3>
+                <button onclick="closeTransactionModal()" class="text-white hover:text-amber-300 text-2xl font-bold">&times;</button>
+            </div>
+            <form id="form-transaction" onsubmit="saveTransaction(event)" class="p-5 space-y-4">
+                <input type="hidden" id="tx-id">
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">തീയതി (Date) *</label>
+                        <input type="date" id="tx-date" required class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-templeMaroon">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">ഇനം (Type) *</label>
+                        <select id="tx-type" onchange="updateCategoryOptions()" required class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-templeMaroon">
+                            <option value="INCOME">വരവ് (Income)</option>
+                            <option value="EXPENSE">ചെലവ് (Expense)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">വിഭാഗം (Category) *</label>
+                        <select id="tx-category" required class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-templeMaroon">
+                            <!-- Dynamic options -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">തുക (Amount ₹) *</label>
+                        <input type="number" id="tx-amount" min="1" step="any" required placeholder="0.00" class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-templeMaroon font-bold text-emerald-800">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">പേര് / വീട്ടുപേര് (Member / House Name)</label>
+                    <input type="text" id="tx-name" list="members-list-options" placeholder="ഉദാ: മാധവൻ നായർ (വടക്കേക്കര)" class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-templeMaroon">
+                    <datalist id="members-list-options"></datalist>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">വിവരണം / കുറപ്പുകൾ (Notes)</label>
+                    <textarea id="tx-notes" rows="2" placeholder="കൂടുതൽ വിവരങ്ങൾ..." class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-templeMaroon"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t">
+                    <button type="button" onclick="closeTransactionModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-semibold hover:bg-gray-100">റദ്ദാക്കുക</button>
+                    <button type="submit" class="maroon-gradient text-white px-5 py-2 rounded-lg text-xs sm:text-sm font-bold shadow hover:brightness-110">സേവ് ചെയ്യുക</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUBSCRIPTION PAY & BULK ALLOCATION MODAL -->
+    <div id="modal-sub-pay" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border-2 border-emerald-600">
+            <div class="bg-emerald-800 p-4 text-white flex justify-between items-center">
+                <h3 class="font-bold text-base sm:text-lg"><i class="fa-solid fa-hand-holding-dollar mr-1"></i> വരിസംഖ്യ അടക്കുക (കുടിശ്ശിക & മുൻകൂർ)</h3>
+                <button onclick="closeSubscriptionPayModal()" class="text-white hover:text-amber-300 text-2xl font-bold">&times;</button>
+            </div>
+            <form id="form-sub-pay" onsubmit="processSubscriptionPay(event)" class="p-5 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">കുടുംബാംഗം / വീട്ടുപേര് തിരഞ്ഞെടുക്കുക *</label>
+                    <select id="sub-pay-member" onchange="updateSubPayMemberStatus()" required class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-emerald-700 font-bold">
+                        <!-- Dynamic member options -->
+                    </select>
+                </div>
+
+                <!-- Current Status Box for Selected Member -->
+                <div id="sub-pay-member-status-box" class="bg-amber-50 p-3 rounded-lg border border-amber-200 text-xs space-y-1">
+                    <!-- Dynamic live status -->
+                </div>
+
+                <!-- Quick Presets -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">പെട്ടെന്ന് തിരഞ്ഞെടുക്കാൻ (Presets):</label>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button type="button" onclick="setSubPayPreset(1)" class="p-2 border border-emerald-300 bg-emerald-50 text-emerald-800 rounded-lg text-xs font-bold hover:bg-emerald-100">1 മാസം (₹300)</button>
+                        <button type="button" onclick="setSubPayPreset(3)" class="p-2 border border-emerald-300 bg-emerald-50 text-emerald-800 rounded-lg text-xs font-bold hover:bg-emerald-100">3 മാസം (₹900)</button>
+                        <button type="button" onclick="setSubPayPreset(6)" class="p-2 border border-emerald-300 bg-emerald-50 text-emerald-800 rounded-lg text-xs font-bold hover:bg-emerald-100">6 മാസം (₹1800)</button>
+                        <button type="button" onclick="setSubPayPreset(12)" class="p-2 border border-emerald-300 bg-emerald-50 text-emerald-800 rounded-lg text-xs font-bold hover:bg-emerald-100">12 മാസം (₹3600)</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">മാസങ്ങളുടെ എണ്ണം *</label>
+                        <input type="number" id="sub-pay-months-count" min="1" max="24" value="1" oninput="recalcSubPayFromCount()" required class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-bold text-emerald-800 focus:ring-2 focus:ring-emerald-700">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">നൽകിയ ആകെ തുക (₹) *</label>
+                        <input type="number" id="sub-pay-amount" min="300" step="300" value="300" oninput="recalcSubPayFromAmount()" required class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-bold text-emerald-800 focus:ring-2 focus:ring-emerald-700">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">അടച്ച തീയതി (Date) *</label>
+                    <input type="date" id="sub-pay-date" required class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-emerald-700">
+                </div>
+
+                <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200 text-xs text-emerald-900 space-y-1">
+                    <p class="font-bold flex justify-between">
+                        <span>ഓട്ടോമാറ്റിക് വിഭജനം:</span>
+                        <span id="sub-pay-preview-summary" class="text-emerald-700 font-extrabold">1 മാസം (₹300)</span>
+                    </p>
+                    <p class="text-[11px] text-gray-600" id="sub-pay-preview-details">ആദ്യം നിലവിലെ കുടിശ്ശികയിലേക്കും ശേഷം വരും മാസങ്ങളിലേക്കും ക്രമീകരിക്കും.</p>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeSubscriptionPayModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-xs font-semibold hover:bg-gray-100">റദ്ദാക്കുക</button>
+                    <button type="submit" class="bg-emerald-700 text-white px-5 py-2 rounded-lg text-xs sm:text-sm font-bold shadow hover:bg-emerald-800">സ്വീകരിക്കുക</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MEMBER LEDGER MODAL -->
+    <div id="modal-member-ledger" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full overflow-hidden border-2 border-templeGold max-h-[90vh] flex flex-col">
+            <div class="maroon-gradient p-4 text-white flex justify-between items-center flex-shrink-0">
+                <div>
+                    <h3 class="font-bold text-base sm:text-lg" id="ledger-member-name">കുടുംബാംഗ ലെഡ്ജർ</h3>
+                    <p class="text-xs text-templeGold" id="ledger-member-branch">തറവാട് വിവരങ്ങൾ</p>
+                </div>
+                <button onclick="closeMemberLedgerModal()" class="text-white hover:text-amber-300 text-2xl font-bold">&times;</button>
+            </div>
+            
+            <div class="p-5 overflow-y-auto space-y-5">
+                <!-- Ledger Summary Stats -->
+                <div class="grid grid-cols-3 gap-3 text-center">
+                    <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+                        <p class="text-xs text-gray-500 font-semibold">ആകെ അടച്ചത്</p>
+                        <h4 class="text-lg font-bold text-emerald-800" id="ledger-stat-paid">₹0</h4>
+                    </div>
+                    <div class="bg-rose-50 p-3 rounded-xl border border-rose-200">
+                        <p class="text-xs text-gray-500 font-semibold">നിലവിലെ കുടിശ്ശിക</p>
+                        <h4 class="text-lg font-bold text-rose-800" id="ledger-stat-arrears">₹0</h4>
+                    </div>
+                    <div class="bg-teal-50 p-3 rounded-xl border border-teal-200">
+                        <p class="text-xs text-gray-500 font-semibold">മുൻകൂർ ബാക്കി</p>
+                        <h4 class="text-lg font-bold text-teal-800" id="ledger-stat-advance">₹0</h4>
+                    </div>
+                </div>
+
+                <!-- Monthly Status Matrix for Member -->
+                <div>
+                    <h4 class="text-xs font-bold text-gray-700 mb-2">2026 മാസവരിസംഖ്യ നിലവാരം:</h4>
+                    <div class="grid grid-cols-4 sm:grid-cols-6 gap-2 text-center" id="ledger-months-grid">
+                        <!-- Dynamic Month Badges -->
+                    </div>
+                </div>
+
+                <!-- Payment History Table -->
+                <div>
+                    <h4 class="text-xs font-bold text-gray-700 mb-2">അടവ് ചരിത്രം (Payment History):</h4>
+                    <div class="border rounded-lg overflow-hidden">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-amber-50 text-templeMaroon font-bold">
+                                <tr>
+                                    <th class="p-2">തീയതി</th>
+                                    <th class="p-2">വിവരണം</th>
+                                    <th class="p-2 text-right">തുക (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledger-history-tbody" class="divide-y divide-gray-100">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 bg-amber-50 border-t flex justify-between items-center flex-shrink-0">
+                <button onclick="quickPayFromLedger()" class="bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-emerald-800">
+                    <i class="fa-solid fa-plus-circle mr-1"></i> വരിസംഖ്യ അടക്കം ചേർക്കുക
+                </button>
+                <button onclick="closeMemberLedgerModal()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg text-xs font-bold hover:bg-gray-300">
+                    അടയ്ക്കുക
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD MEMBER MODAL -->
+    <div id="modal-member" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden no-print">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden border-2 border-templeGold">
+            <div class="maroon-gradient p-4 text-white flex justify-between items-center">
+                <h3 class="font-bold text-base sm:text-lg">പുതിയ കുടുംബത്തെ ചേർക്കുക</h3>
+                <button onclick="closeMemberModal()" class="text-white hover:text-amber-300 text-2xl font-bold">&times;</button>
+            </div>
+            <form id="form-member" onsubmit="saveMember(event)" class="p-5 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">കുടുംബാംഗത്തിന്റെ പേര് *</label>
+                    <input type="text" id="mb-name" required placeholder="ഉദാ: കെ. വി. മാധവൻ നായർ" class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-templeMaroon">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">വീട്ടുപേര് / തറവാട് *</label>
+                    <input type="text" id="mb-branch" required placeholder="ഉദാ: വടക്കേക്കര തറവാട്" class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-templeMaroon">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">ഫോൺ നമ്പർ</label>
+                        <input type="tel" id="mb-phone" placeholder="9876543210" class="w-full p-2 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-templeMaroon">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">മാസ വരിസംഖ്യ (Fixed)</label>
+                        <input type="text" value="₹ 300 / മാസം" disabled class="w-full p-2 border border-gray-200 bg-gray-100 rounded-lg text-xs sm:text-sm font-bold text-emerald-800">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-3 border-t">
+                    <button type="button" onclick="closeMemberModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-xs font-semibold hover:bg-gray-100">റദ്ദാക്കുക</button>
+                    <button type="submit" class="maroon-gradient text-white px-5 py-2 rounded-lg text-xs sm:text-sm font-bold">ചേർക്കുക</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PRINTABLE RECEIPT / VOUCHER MODAL -->
+    <div id="modal-receipt" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 border-4 border-templeGold relative">
+            <div class="text-center pb-4 border-b-2 border-amber-800">
+                <div class="text-3xl mb-1">🛕</div>
+                <h2 class="text-xl font-bold text-templeMaroon">ആലുംകുന്നുപറമ്പിൽ ക്ഷേത്രം</h2>
+                <p class="text-xs text-gray-600">ധനകാര്യ രസീത് / വൗച്ചർ</p>
+            </div>
+            <div class="py-4 space-y-3 text-xs sm:text-sm" id="receipt-details">
+                <!-- Dynamic Voucher Details -->
+            </div>
+            <div class="pt-4 border-t flex justify-between items-center no-print">
+                <button onclick="closeReceiptModal()" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-xs font-bold hover:bg-gray-300">അടയ്ക്കുക</button>
+                <button onclick="window.print()" class="gold-gradient text-templeDark px-4 py-2 rounded-lg text-xs font-bold shadow hover:brightness-105">പ്രിന്റ് ചെയ്യുക</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const MONTH_FULL_ML = ['ജനുവരി', 'ഫെബ്രുവരി', 'മാർച്ച്', 'ഏപ്രിൽ', 'മേയ്', 'ജൂൺ', 'ജൂലൈ', 'ഓഗസ്റ്റ്', 'സെപ്റ്റംബർ', 'ഒക്ടോബർ', 'നവംബർ', 'ഡിസംബർ'];
+
+        // DEFAULT PRE-LOADED MEMBERS
+        const DEFAULT_MEMBERS = [
+            { id: 'm1', name: 'കെ. വി. മാധവൻ നായർ', branch: 'വടക്കേക്കര തറവാട്', phone: '9447123456' },
+            { id: 'm2', name: 'പി. രാജഗോപാൽ', branch: 'കിഴക്കേക്കര വീട്', phone: '9847098765' },
+            { id: 'm3', name: 'ശ്രീകുമാർ എ. പി.', branch: 'പടിയറ വീട്', phone: '9744112233' },
+            { id: 'm4', name: 'സുരേഷ് കുമാർ', branch: 'തെക്കേതിൽ വീട്', phone: '9400556677' },
+            { id: 'm5', name: 'ഉണ്ണികൃഷ്ണൻ നായർ', branch: 'പടിഞ്ഞാറേ തറവാട്', phone: '9846112244' }
+        ];
+
+        // DEFAULT PRE-LOADED TRANSACTIONS
+        const DEFAULT_TRANSACTIONS = [
+            { id: 't1', memberId: 'm1', date: '2026-01-05', type: 'INCOME', category: 'മാസവരിസംഖ്യ', amount: 900, name: 'കെ. വി. മാധവൻ നായർ (വടക്കേക്കര തറവാട്)', notes: '2026 (Jan, Feb, Mar) 3 മാസത്തെ വരിസംഖ്യ' },
+            { id: 't2', memberId: 'm2', date: '2026-01-10', type: 'INCOME', category: 'മാസവരിസംഖ്യ', amount: 1800, name: 'പി. രാജഗോപാൽ (കിഴക്കേക്കര വീട്)', notes: '2026 (Jan, Feb, Mar, Apr, May, Jun) 6 മാസത്തെ വരിസംഖ്യ (മുൻകൂർ അടവ്)' },
+            { id: 't3', memberId: 'm3', date: '2026-01-12', type: 'INCOME', category: 'മാസവരിസംഖ്യ', amount: 300, name: 'ശ്രീകുമാർ എ. പി. (പടിയറ വീട്)', notes: '2026 Jan മാസവരിസംഖ്യ' },
+            { id: 't4', memberId: null, date: '2026-02-15', type: 'INCOME', category: 'പൂജ വഴിപാട്', amount: 4500, name: 'വിവിധ ഭക്തജനങ്ങൾ', notes: 'നിത്യപൂജ, ഗണപതിഹോമം വഴിപാടുകൾ' },
+            { id: 't5', memberId: null, date: '2026-02-18', type: 'EXPENSE', category: 'പൂജ സാമഗ്രികൾ', amount: 2800, name: 'രാമകൃഷ്ണൻ ശാന്തി', notes: 'പൂജ എണ്ണ, എള്ള്, പുഷ്പം വാങ്ങിയത്' },
+            { id: 't6', memberId: null, date: '2026-03-01', type: 'EXPENSE', category: 'വേതനം', amount: 8000, name: 'ശാന്തിക്കാരൻ വേതനം', notes: 'ഫെബ്രുവരി മാസ വേതനം നൽകിയത്' }
+        ];
+
+        let transactions = JSON.parse(localStorage.getItem('akt_tx_v3')) || DEFAULT_TRANSACTIONS;
+        let members = JSON.parse(localStorage.getItem('akt_mb_v3')) || DEFAULT_MEMBERS;
+        let activeLedgerMemberId = null;
+
+        const categories = {
+            INCOME: ['മാസവരിസംഖ്യ', 'പൂജ വഴിപാട്', 'സംഭാവന', 'ഉത്സവം/വിശേഷം', 'മറ്റ് വരവുകൾ'],
+            EXPENSE: ['പൂജ സാമഗ്രികൾ', 'വേതനം', 'അറ്റകുറ്റപ്പണി/വൈദ്യുതി', 'ഉത്സവച്ചെലവ്', 'മറ്റ് ചെലവുകൾ']
+        };
+
+        // INITIALIZE APP
+        window.onload = function() {
+            renderDashboard();
+            renderSubscriptionGrid();
+            renderTransactions();
+            renderMembers();
+            populateDatalist();
+            document.getElementById('tx-date').valueAsDate = new Date();
+            document.getElementById('sub-pay-date').valueAsDate = new Date();
+        };
+
+        function saveData() {
+            localStorage.setItem('akt_tx_v3', JSON.stringify(transactions));
+            localStorage.setItem('akt_mb_v3', JSON.stringify(members));
+        }
+
+        // TAB SWITCHING
+        function switchTab(tabName) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-templeMaroon', 'border-templeMaroon');
+                btn.classList.add('text-gray-600', 'border-transparent');
+            });
+
+            document.getElementById(`sec-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.add('active', 'text-templeMaroon', 'border-templeMaroon');
+            activeBtn.classList.remove('text-gray-600', 'border-transparent');
+
+            if(tabName === 'dashboard') renderDashboard();
+            if(tabName === 'subscription') renderSubscriptionGrid();
+            if(tabName === 'members') renderMembers();
+        }
+
+        // POPULATE DATALIST FOR MEMBER NAMES
+        function populateDatalist() {
+            const dl = document.getElementById('members-list-options');
+            dl.innerHTML = '';
+            members.forEach(m => {
+                dl.innerHTML += `<option value="${m.name} (${m.branch})">`;
+            });
+        }
+
+        /**
+         * CALCULATE MEMBER MONTHLY STATUS MAP FOR A SPECIFIC YEAR
+         * Calculates exact month allocations dynamically from total paid sub amount per member!
+         */
+        function getSubscriptionMapForYear(year) {
+            const map = {};
+            // Current month index (0 to 11). For 2026, fallback to current month index or March
+            const today = new Date();
+            const currentYearStr = today.getFullYear().toString();
+            const currentMonthIdx = (currentYearStr === year) ? today.getMonth() : (parseInt(year) < parseInt(currentYearStr) ? 11 : 2);
+
+            members.forEach(m => {
+                // Calculate total subscription money paid for this member in this year
+                let memberTotalSubPaid = 0;
+                transactions.forEach(t => {
+                    if (t.type === 'INCOME' && t.category === 'മാസവരിസംഖ്യ') {
+                        let matches = (t.memberId === m.id);
+                        if (!matches && t.name) {
+                            matches = t.name.includes(m.name) || t.name.includes(m.branch);
+                        }
+                        if (matches && t.date.startsWith(year)) {
+                            memberTotalSubPaid += parseFloat(t.amount) || 0;
+                        }
+                    }
+                });
+
+                // How many full months covered by this paid amount?
+                const monthsCovered = Math.floor(memberTotalSubPaid / 300);
+
+                const monthStatuses = [];
+                for (let i = 0; i < 12; i++) {
+                    if (i < monthsCovered) {
+                        if (i > currentMonthIdx) {
+                            monthStatuses.push({ status: 'ADVANCE', label: 'മുൻകൂർ' });
+                        } else {
+                            monthStatuses.push({ status: 'PAID', label: 'നൽകി' });
+                        }
+                    } else {
+                        if (i <= currentMonthIdx) {
+                            monthStatuses.push({ status: 'ARREARS', label: 'കുടിശ്ശിക' });
+                        } else {
+                            monthStatuses.push({ status: 'UPCOMING', label: 'വരാനുള്ളത്' });
+                        }
+                    }
+                }
+
+                map[m.id] = {
+                    totalPaid: memberTotalSubPaid,
+                    monthsCovered: monthsCovered,
+                    months: monthStatuses
+                };
+            });
+
+            return map;
+        }
+
+        // DASHBOARD RENDER
+        function renderDashboard() {
+            let totalIncome = 0;
+            let totalExpense = 0;
+            const categoryMap = {};
+
+            transactions.forEach(t => {
+                const amt = parseFloat(t.amount) || 0;
+                if (t.type === 'INCOME') {
+                    totalIncome += amt;
+                    categoryMap[t.category] = (categoryMap[t.category] || 0) + amt;
+                } else {
+                    totalExpense += amt;
+                }
+            });
+
+            const netBalance = totalIncome - totalExpense;
+
+            document.getElementById('dash-total-income').innerText = `₹ ${totalIncome.toLocaleString('en-IN')}`;
+            document.getElementById('dash-total-expense').innerText = `₹ ${totalExpense.toLocaleString('en-IN')}`;
+            document.getElementById('dash-net-balance').innerText = `₹ ${netBalance.toLocaleString('en-IN')}`;
+
+            // Arrears vs Advance stats for current year (2026)
+            const year = '2026';
+            const subMap = getSubscriptionMapForYear(year);
+            let totalArrears = 0;
+            let totalAdvance = 0;
+
+            members.forEach(m => {
+                const mData = subMap[m.id];
+                mData.months.forEach(st => {
+                    if (st.status === 'ARREARS') totalArrears += 300;
+                    if (st.status === 'ADVANCE') totalAdvance += 300;
+                });
+            });
+
+            document.getElementById('dash-sub-arrears').innerText = `₹ ${totalArrears.toLocaleString('en-IN')}`;
+            document.getElementById('dash-sub-advance-text').innerText = `മുൻകൂർ അടച്ചത്: ₹${totalAdvance.toLocaleString('en-IN')}`;
+
+            // Recent 5 Transactions
+            const recentBody = document.getElementById('dash-recent-tbody');
+            recentBody.innerHTML = '';
+            const sorted = [...transactions].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+
+            if(sorted.length === 0) {
+                recentBody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-gray-400">ഇടപാടുകൾ ലഭ്യമല്ല</td></tr>`;
+            } else {
+                sorted.forEach(t => {
+                    const isInc = t.type === 'INCOME';
+                    recentBody.innerHTML += `
+                        <tr class="hover:bg-amber-50/50">
+                            <td class="p-2.5 font-semibold text-gray-600">${formatDate(t.date)}</td>
+                            <td class="p-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold ${isInc ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${t.category}</span></td>
+                            <td class="p-2.5 font-medium">${t.name || '-'}</td>
+                            <td class="p-2.5 text-right font-bold ${isInc ? 'text-emerald-700' : 'text-rose-700'}">${isInc ? '+' : '-'} ₹${parseFloat(t.amount).toLocaleString('en-IN')}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // Category Breakdown Chart
+            const catDiv = document.getElementById('category-breakdown');
+            catDiv.innerHTML = '';
+            if (Object.keys(categoryMap).length === 0) {
+                catDiv.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">വരവ് വിവരങ്ങൾ ലഭ്യമല്ല</p>`;
+            } else {
+                for (const [cat, amt] of Object.entries(categoryMap)) {
+                    const pct = totalIncome > 0 ? Math.round((amt / totalIncome) * 100) : 0;
+                    catDiv.innerHTML += `
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span>${cat}</span>
+                                <span class="text-emerald-800">₹${amt.toLocaleString('en-IN')} (${pct}%)</span>
+                            </div>
+                            <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                                <div class="bg-emerald-600 h-full rounded-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // RENDER SUBSCRIPTION MATRIX TABLE
+        function renderSubscriptionGrid() {
+            const year = document.getElementById('sub-year-select').value;
+            const subMap = getSubscriptionMapForYear(year);
+            const tbody = document.getElementById('subscription-grid-tbody');
+            tbody.innerHTML = '';
+
+            let totalYearlyCollected = 0;
+            let totalYearlyArrears = 0;
+            let totalYearlyAdvance = 0;
+            const totalTarget = members.length * 12 * 300;
+
+            members.forEach(m => {
+                const mData = subMap[m.id];
+                totalYearlyCollected += mData.totalPaid;
+                
+                let monthCellsHTML = '';
+                let memberArrears = 0;
+                let memberAdvance = 0;
+
+                mData.months.forEach((mSt, i) => {
+                    if (mSt.status === 'PAID') {
+                        monthCellsHTML += `
+                            <td class="p-1 text-center">
+                                <span onclick="openMemberLedgerModal('${m.id}')" class="w-full py-1 rounded bg-emerald-100 text-emerald-800 font-bold block text-[11px] cursor-pointer hover:bg-emerald-200" title="₹300 നൽകി">
+                                    ✓ ₹300
+                                </span>
+                            </td>`;
+                    } else if (mSt.status === 'ADVANCE') {
+                        memberAdvance += 300;
+                        totalYearlyAdvance += 300;
+                        monthCellsHTML += `
+                            <td class="p-1 text-center">
+                                <span onclick="openMemberLedgerModal('${m.id}')" class="w-full py-1 rounded bg-teal-100 text-teal-800 font-bold block text-[11px] cursor-pointer hover:bg-teal-200" title="മുൻകൂർ അടവ്">
+                                    ★ മുൻകൂർ
+                                </span>
+                            </td>`;
+                    } else if (mSt.status === 'ARREARS') {
+                        memberArrears += 300;
+                        totalYearlyArrears += 300;
+                        monthCellsHTML += `
+                            <td class="p-1 text-center">
+                                <button onclick="quickPayFromCell('${m.id}')" class="w-full py-1 rounded bg-rose-100 text-rose-700 font-bold block text-[11px] hover:bg-rose-200" title="കുടിശ്ശിക - അടക്കുക">
+                                    കുടിശ്ശിക
+                                </button>
+                            </td>`;
+                    } else {
+                        monthCellsHTML += `
+                            <td class="p-1 text-center">
+                                <button onclick="quickPayFromCell('${m.id}')" class="w-full py-1 rounded bg-gray-100 text-gray-600 block text-[11px] hover:bg-emerald-50 hover:text-emerald-700">
+                                    അടക്കുക
+                                </button>
+                            </td>`;
+                    }
+                });
+
+                let statusBadge = '';
+                if (memberArrears > 0) {
+                    statusBadge = `<span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-bold text-[10px]">കുടിശ്ശിക: ₹${memberArrears}</span>`;
+                } else if (memberAdvance > 0) {
+                    statusBadge = `<span class="px-2 py-0.5 rounded bg-teal-100 text-teal-800 font-bold text-[10px]">മുൻകൂർ: ₹${memberAdvance}</span>`;
+                } else {
+                    statusBadge = `<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">കൃത്യം</span>`;
+                }
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-amber-50/60 transition">
+                        <td class="p-3 font-bold text-gray-800 cursor-pointer hover:text-templeMaroon" onclick="openMemberLedgerModal('${m.id}')">
+                            <div>${m.name}</div>
+                            <div class="text-[10px] text-amber-800 font-normal">${m.branch}</div>
+                        </td>
+                        ${monthCellsHTML}
+                        <td class="p-3 text-right">
+                            ${statusBadge}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('sub-summary-target').innerText = `₹ ${totalTarget.toLocaleString('en-IN')}`;
+            document.getElementById('sub-summary-collected').innerText = `₹ ${totalYearlyCollected.toLocaleString('en-IN')}`;
+            document.getElementById('sub-summary-arrears').innerText = `₹ ${totalYearlyArrears.toLocaleString('en-IN')}`;
+            document.getElementById('sub-summary-advance').innerText = `₹ ${totalYearlyAdvance.toLocaleString('en-IN')}`;
+        }
+
+        function quickPayFromCell(memberId) {
+            openSubscriptionPayModal();
+            document.getElementById('sub-pay-member').value = memberId;
+            updateSubPayMemberStatus();
+        }
+
+        // SUBSCRIPTION MODAL HELPERS
+        function openSubscriptionPayModal() {
+            const memberSelect = document.getElementById('sub-pay-member');
+            memberSelect.innerHTML = '';
+            members.forEach(m => {
+                memberSelect.innerHTML += `<option value="${m.id}">${m.name} (${m.branch})</option>`;
+            });
+
+            updateSubPayMemberStatus();
+            document.getElementById('modal-sub-pay').classList.remove('hidden');
+        }
+
+        function closeSubscriptionPayModal() {
+            document.getElementById('modal-sub-pay').classList.add('hidden');
+        }
+
+        function updateSubPayMemberStatus() {
+            const mId = document.getElementById('sub-pay-member').value;
+            const year = document.getElementById('sub-year-select').value || '2026';
+            const subMap = getSubscriptionMapForYear(year);
+            const mData = subMap[mId];
+            const statusBox = document.getElementById('sub-pay-member-status-box');
+
+            if (!mData) return;
+
+            let arrCount = 0;
+            mData.months.forEach(st => { if (st.status === 'ARREARS') arrCount++; });
+
+            statusBox.innerHTML = `
+                <div class="flex justify-between font-bold text-amber-900">
+                    <span>ഇതുവരെ അടച്ച ആകെ തുക: ₹${mData.totalPaid.toLocaleString('en-IN')}</span>
+                    <span class="${arrCount > 0 ? 'text-rose-700' : 'text-emerald-700'}">
+                        ${arrCount > 0 ? `കുടിശ്ശിക: ${arrCount} മാസം (₹${arrCount * 300})` : 'കുടിശ്ശികയില്ല!'}
+                    </span>
+                </div>
+            `;
+
+            recalcSubPayFromCount();
+        }
+
+        function setSubPayPreset(monthsCount) {
+            document.getElementById('sub-pay-months-count').value = monthsCount;
+            document.getElementById('sub-pay-amount').value = monthsCount * 300;
+            recalcSubPayPreview();
+        }
+
+        function recalcSubPayFromCount() {
+            const count = parseInt(document.getElementById('sub-pay-months-count').value) || 1;
+            document.getElementById('sub-pay-amount').value = count * 300;
+            recalcSubPayPreview();
+        }
+
+        function recalcSubPayFromAmount() {
+            const amt = parseFloat(document.getElementById('sub-pay-amount').value) || 300;
+            const count = Math.max(1, Math.floor(amt / 300));
+            document.getElementById('sub-pay-months-count').value = count;
+            recalcSubPayPreview();
+        }
+
+        function recalcSubPayPreview() {
+            const count = parseInt(document.getElementById('sub-pay-months-count').value) || 1;
+            const totalAmt = count * 300;
+            
+            document.getElementById('sub-pay-preview-summary').innerText = `${count} മാസം (₹${totalAmt})`;
+
+            const mId = document.getElementById('sub-pay-member').value;
+            const year = '2026';
+            const subMap = getSubscriptionMapForYear(year);
+            const mData = subMap[mId];
+
+            if (mData) {
+                const startIdx = mData.monthsCovered;
+                const coveredMonthNames = [];
+                for (let i = 0; i < count; i++) {
+                    const idx = startIdx + i;
+                    if (idx < 12) {
+                        coveredMonthNames.push(MONTH_FULL_ML[idx]);
+                    } else {
+                        coveredMonthNames.push(`അടുത്ത വർഷം (${i+1})`);
+                    }
+                }
+                document.getElementById('sub-pay-preview-details').innerText = `അടയ്ക്കുന്ന മാസങ്ങൾ: ${coveredMonthNames.join(', ')}`;
+            }
+        }
+
+        // PROCESS BULK OR SINGLE SUBSCRIPTION PAYMENT
+        function processSubscriptionPay(e) {
+            e.preventDefault();
+            const memberId = document.getElementById('sub-pay-member').value;
+            const memberObj = members.find(m => m.id === memberId);
+            const amount = parseFloat(document.getElementById('sub-pay-amount').value);
+            const date = document.getElementById('sub-pay-date').value;
+            const count = parseInt(document.getElementById('sub-pay-months-count').value);
+
+            const year = '2026';
+            const subMap = getSubscriptionMapForYear(year);
+            const mData = subMap[memberId];
+
+            const startIdx = mData ? mData.monthsCovered : 0;
+            const coveredMonthNames = [];
+            for (let i = 0; i < count; i++) {
+                const idx = startIdx + i;
+                if (idx < 12) {
+                    coveredMonthNames.push(MONTH_NAMES[idx]);
+                } else {
+                    coveredMonthNames.push(`Adv${i+1}`);
+                }
+            }
+
+            const monthSummaryStr = coveredMonthNames.join(', ');
+
+            const newTx = {
+                id: 't_' + Date.now(),
+                memberId: memberId,
+                date: date,
+                type: 'INCOME',
+                category: 'മാസവരിസംഖ്യ',
+                amount: amount,
+                name: memberObj ? `${memberObj.name} (${memberObj.branch})` : '',
+                notes: `${year} (${monthSummaryStr}) ${count} മാസത്തെ വരിസംഖ്യ`
+            };
+
+            transactions.unshift(newTx);
+            saveData();
+            closeSubscriptionPayModal();
+            renderSubscriptionGrid();
+            renderDashboard();
+            renderTransactions();
+
+            if (!document.getElementById('modal-member-ledger').classList.contains('hidden')) {
+                openMemberLedgerModal(memberId);
+            }
+        }
+
+        // MEMBER LEDGER MODAL
+        function openMemberLedgerModal(memberId) {
+            activeLedgerMemberId = memberId;
+            const m = members.find(item => item.id === memberId);
+            if (!m) return;
+
+            document.getElementById('ledger-member-name').innerText = m.name;
+            document.getElementById('ledger-member-branch').innerText = `${m.branch} • ഫോൺ: ${m.phone || 'ഇല്ല'}`;
+
+            const year = '2026';
+            const subMap = getSubscriptionMapForYear(year);
+            const mData = subMap[memberId];
+
+            let arrearsAmt = 0;
+            let advanceAmt = 0;
+
+            mData.months.forEach(st => {
+                if (st.status === 'ARREARS') arrearsAmt += 300;
+                if (st.status === 'ADVANCE') advanceAmt += 300;
+            });
+
+            document.getElementById('ledger-stat-paid').innerText = `₹ ${mData.totalPaid.toLocaleString('en-IN')}`;
+            document.getElementById('ledger-stat-arrears').innerText = `₹ ${arrearsAmt.toLocaleString('en-IN')}`;
+            document.getElementById('ledger-stat-advance').innerText = `₹ ${advanceAmt.toLocaleString('en-IN')}`;
+
+            // Months Grid
+            const gridDiv = document.getElementById('ledger-months-grid');
+            gridDiv.innerHTML = '';
+            mData.months.forEach((st, idx) => {
+                let bgClass = 'bg-gray-100 text-gray-600';
+                if (st.status === 'PAID') bgClass = 'bg-emerald-100 text-emerald-800 border border-emerald-300';
+                if (st.status === 'ADVANCE') bgClass = 'bg-teal-100 text-teal-800 border border-teal-300';
+                if (st.status === 'ARREARS') bgClass = 'bg-rose-100 text-rose-800 border border-rose-300 font-bold';
+
+                gridDiv.innerHTML += `
+                    <div class="p-2 rounded-lg ${bgClass} text-xs">
+                        <div class="font-bold">${MONTH_NAMES[idx]}</div>
+                        <div class="text-[10px] mt-0.5">${st.label}</div>
+                    </div>
+                `;
+            });
+
+            // Member Payments History
+            const historyBody = document.getElementById('ledger-history-tbody');
+            historyBody.innerHTML = '';
+
+            const mTransactions = transactions.filter(t => t.memberId === memberId || (t.name && (t.name.includes(m.name) || t.name.includes(m.branch))));
+
+            if (mTransactions.length === 0) {
+                historyBody.innerHTML = `<tr><td colspan="3" class="p-3 text-center text-gray-400">അടവ് വിവരങ്ങൾ ലഭ്യമല്ല</td></tr>`;
+            } else {
+                mTransactions.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(t => {
+                    historyBody.innerHTML += `
+                        <tr class="hover:bg-amber-50">
+                            <td class="p-2 font-medium">${formatDate(t.date)}</td>
+                            <td class="p-2">${t.notes || t.category}</td>
+                            <td class="p-2 text-right font-bold text-emerald-700">₹${parseFloat(t.amount).toLocaleString('en-IN')}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            document.getElementById('modal-member-ledger').classList.remove('hidden');
+        }
+
+        function closeMemberLedgerModal() {
+            document.getElementById('modal-member-ledger').classList.add('hidden');
+        }
+
+        function quickPayFromLedger() {
+            if (activeLedgerMemberId) {
+                openSubscriptionPayModal();
+                document.getElementById('sub-pay-member').value = activeLedgerMemberId;
+                updateSubPayMemberStatus();
+            }
+        }
+
+        // RENDER TRANSACTIONS LIST
+        function renderTransactions(data = transactions) {
+            const tbody = document.getElementById('transactions-tbody');
+            const noRec = document.getElementById('no-records');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                noRec.classList.remove('hidden');
+                return;
+            } else {
+                noRec.classList.add('hidden');
+            }
+
+            const sorted = [...data].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            sorted.forEach(t => {
+                const isInc = t.type === 'INCOME';
+                tbody.innerHTML += `
+                    <tr class="hover:bg-amber-50/40 transition">
+                        <td class="p-3 font-medium text-gray-700 whitespace-nowrap">${formatDate(t.date)}</td>
+                        <td class="p-3">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${isInc ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                                ${isInc ? 'വരവ്' : 'ചെലവ്'}
+                            </span>
+                        </td>
+                        <td class="p-3 font-semibold text-gray-800">${t.category}</td>
+                        <td class="p-3 font-medium text-gray-900">${t.name || '-'}</td>
+                        <td class="p-3 text-gray-600 max-w-xs truncate">${t.notes || '-'}</td>
+                        <td class="p-3 text-right font-bold text-base ${isInc ? 'text-emerald-700' : 'text-rose-700'}">
+                            ${isInc ? '+' : '-'} ₹${parseFloat(t.amount).toLocaleString('en-IN')}
+                        </td>
+                        <td class="p-3 text-center space-x-2 no-print">
+                            <button onclick="viewReceipt('${t.id}')" title="രസീത് അച്ചടിക്കുക" class="text-amber-700 hover:text-amber-900">
+                                <i class="fa-solid fa-receipt"></i>
+                            </button>
+                            <button onclick="editTransaction('${t.id}')" title="തിരുത്തുക" class="text-blue-600 hover:text-blue-800">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deleteTransaction('${t.id}')" title="നീക്കം ചെയ്യുക" class="text-red-600 hover:text-red-800">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // MEMBERS LIST RENDER
+        function renderMembers() {
+            const grid = document.getElementById('members-grid');
+            grid.innerHTML = '';
+
+            const subMap = getSubscriptionMapForYear('2026');
+
+            members.forEach(m => {
+                const mData = subMap[m.id];
+                let arrAmt = 0;
+                let advAmt = 0;
+                if (mData) {
+                    mData.months.forEach(st => {
+                        if (st.status === 'ARREARS') arrAmt += 300;
+                        if (st.status === 'ADVANCE') advAmt += 300;
+                    });
+                }
+
+                grid.innerHTML += `
+                    <div class="bg-white rounded-xl card-shadow p-5 border border-amber-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-base text-templeMaroon cursor-pointer hover:underline" onclick="openMemberLedgerModal('${m.id}')">${m.name}</h3>
+                                <span class="bg-amber-100 text-amber-900 text-xs font-bold px-2.5 py-1 rounded-full">${m.branch}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-3"><i class="fa-solid fa-phone text-amber-700 mr-1"></i> ${m.phone || 'ഫോൺ ഇല്ല'}</p>
+                            
+                            <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 text-xs space-y-1.5 mb-4">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 font-medium">ഇതുവരെ അടച്ച തുക:</span>
+                                    <span class="font-bold text-emerald-800">₹${(mData ? mData.totalPaid : 0).toLocaleString('en-IN')}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 font-medium">കുടിശ്ശിക / മുൻകൂർ:</span>
+                                    <span class="font-bold ${arrAmt > 0 ? 'text-rose-700' : 'text-teal-700'}">
+                                        ${arrAmt > 0 ? `കുടിശ്ശിക: ₹${arrAmt}` : (advAmt > 0 ? `മുൻകൂർ: ₹${advAmt}` : 'കൃത്യം')}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="openMemberLedgerModal('${m.id}')" class="bg-amber-100 text-templeMaroon text-xs font-bold py-2 rounded-lg hover:bg-amber-200 transition">
+                                <i class="fa-solid fa-book mr-1"></i> ലെഡ്ജർ
+                            </button>
+                            <button onclick="quickPayForMember('${m.id}')" class="bg-emerald-700 text-white text-xs font-bold py-2 rounded-lg hover:bg-emerald-800 transition">
+                                <i class="fa-solid fa-hand-holding-dollar"></i> അടവ്
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function quickPayForMember(memberId) {
+            openSubscriptionPayModal();
+            document.getElementById('sub-pay-member').value = memberId;
+            updateSubPayMemberStatus();
+        }
+
+        // TRANSACTION MODALS
+        function openTransactionModal(editId = null) {
+            const modal = document.getElementById('modal-transaction');
+            const form = document.getElementById('form-transaction');
+            form.reset();
+
+            if (editId) {
+                const t = transactions.find(item => item.id === editId);
+                if (t) {
+                    document.getElementById('modal-tx-title').innerText = 'കണക്ക് തിരുത്തുക';
+                    document.getElementById('tx-id').value = t.id;
+                    document.getElementById('tx-date').value = t.date;
+                    document.getElementById('tx-type').value = t.type;
+                    updateCategoryOptions();
+                    document.getElementById('tx-category').value = t.category;
+                    document.getElementById('tx-amount').value = t.amount;
+                    document.getElementById('tx-name').value = t.name || '';
+                    document.getElementById('tx-notes').value = t.notes || '';
+                }
+            } else {
+                document.getElementById('modal-tx-title').innerText = 'പുതിയ കണക്ക് ചേർക്കുക';
+                document.getElementById('tx-id').value = '';
+                document.getElementById('tx-date').valueAsDate = new Date();
+                updateCategoryOptions();
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeTransactionModal() {
+            document.getElementById('modal-transaction').classList.add('hidden');
+        }
+
+        function updateCategoryOptions() {
+            const type = document.getElementById('tx-type').value;
+            const select = document.getElementById('tx-category');
+            select.innerHTML = '';
+            categories[type].forEach(c => {
+                select.innerHTML += `<option value="${c}">${c}</option>`;
+            });
+        }
+
+        function saveTransaction(e) {
+            e.preventDefault();
+            const id = document.getElementById('tx-id').value;
+            const date = document.getElementById('tx-date').value;
+            const type = document.getElementById('tx-type').value;
+            const category = document.getElementById('tx-category').value;
+            const amount = parseFloat(document.getElementById('tx-amount').value);
+            const name = document.getElementById('tx-name').value;
+            const notes = document.getElementById('tx-notes').value;
+
+            if (id) {
+                const idx = transactions.findIndex(t => t.id === id);
+                if (idx !== -1) {
+                    transactions[idx] = { ...transactions[idx], date, type, category, amount, name, notes };
+                }
+            } else {
+                const newTx = {
+                    id: 't_' + Date.now(),
+                    date, type, category, amount, name, notes
+                };
+                transactions.unshift(newTx);
+            }
+
+            saveData();
+            closeTransactionModal();
+            renderDashboard();
+            renderSubscriptionGrid();
+            renderTransactions();
+        }
+
+        function deleteTransaction(id) {
+            if (confirm('ഈ വിവരങ്ങൾ നീക്കം ചെയ്യണമെന്ന് ഉറപ്പാണോ?')) {
+                transactions = transactions.filter(t => t.id !== id);
+                saveData();
+                renderDashboard();
+                renderSubscriptionGrid();
+                renderTransactions();
+            }
+        }
+
+        function editTransaction(id) {
+            openTransactionModal(id);
+        }
+
+        // MEMBER MODAL LOGIC
+        function openMemberModal() {
+            document.getElementById('form-member').reset();
+            document.getElementById('modal-member').classList.remove('hidden');
+        }
+
+        function closeMemberModal() {
+            document.getElementById('modal-member').classList.add('hidden');
+        }
+
+        function saveMember(e) {
+            e.preventDefault();
+            const newMember = {
+                id: 'm_' + Date.now(),
+                name: document.getElementById('mb-name').value,
+                branch: document.getElementById('mb-branch').value,
+                phone: document.getElementById('mb-phone').value
+            };
+
+            members.push(newMember);
+            saveData();
+            closeMemberModal();
+            renderMembers();
+            renderSubscriptionGrid();
+            populateDatalist();
+        }
+
+        // FILTERS & SEARCH
+        function applyFilters() {
+            const q = document.getElementById('filter-search').value.toLowerCase();
+            const type = document.getElementById('filter-type').value;
+            const cat = document.getElementById('filter-category').value;
+            const month = document.getElementById('filter-month').value;
+
+            const filtered = transactions.filter(t => {
+                const matchQ = (t.name && t.name.toLowerCase().includes(q)) || 
+                               (t.notes && t.notes.toLowerCase().includes(q)) ||
+                               (t.category && t.category.toLowerCase().includes(q));
+                const matchType = type === 'ALL' || t.type === type;
+                const matchCat = cat === 'ALL' || t.category === cat;
+                const matchMonth = !month || (t.date && t.date.startsWith(month));
+
+                return matchQ && matchType && matchCat && matchMonth;
+            });
+
+            renderTransactions(filtered);
+        }
+
+        // VIEW VOUCHER RECEIPT
+        function viewReceipt(id) {
+            const t = transactions.find(item => item.id === id);
+            if (!t) return;
+
+            const isInc = t.type === 'INCOME';
+            const details = document.getElementById('receipt-details');
+            details.innerHTML = `
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-gray-500">രസീത് നമ്പർ:</span>
+                    <span class="font-mono font-bold text-templeMaroon">#AKT-${t.id.slice(-5)}</span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-gray-500">തീയതി:</span>
+                    <span class="font-bold">${formatDate(t.date)}</span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-gray-500">ഇനം / വിഭാഗം:</span>
+                    <span class="font-bold ${isInc ? 'text-emerald-700' : 'text-rose-700'}">${isInc ? 'വരവ്' : 'ചെലവ്'} - ${t.category}</span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-gray-500">${isInc ? 'നൽകിയ ആൾ / വീട്ടുപേര്' : 'സ്വീകരിച്ച ആൾ'}:</span>
+                    <span class="font-bold text-gray-800">${t.name || '-'}</span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-gray-500">വിവരണം:</span>
+                    <span class="font-medium text-gray-700">${t.notes || '-'}</span>
+                </div>
+                <div class="flex justify-between pt-2 text-base sm:text-lg font-bold">
+                    <span>ആകെ തുക:</span>
+                    <span class="${isInc ? 'text-emerald-700' : 'text-rose-700'}">₹ ${parseFloat(t.amount).toLocaleString('en-IN')}</span>
+                </div>
+            `;
+
+            document.getElementById('modal-receipt').classList.remove('hidden');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('modal-receipt').classList.add('hidden');
+        }
+
+        // EXPORT CSV
+        function exportCSV() {
+            if (transactions.length === 0) {
+                alert('എക്സ്പോർട്ട് ചെയ്യാൻ വിവരങ്ങൾ ഒന്നുമില്ല!');
+                return;
+            }
+
+            let csv = 'ID,Date,Type,Category,Amount,Name,Notes\n';
+            transactions.forEach(t => {
+                const nameEsc = `"${(t.name || '').replace(/"/g, '""')}"`;
+                const notesEsc = `"${(t.notes || '').replace(/"/g, '""')}"`;
+                csv += `${t.id},${t.date},${t.type},${t.category},${t.amount},${nameEsc},${notesEsc}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', `Aalumkunnuparambil_Temple_Accounts_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // HELPER DATE FORMAT
+        function formatDate(dateStr) {
+            if(!dateStr) return '-';
+            const [y, m, d] = dateStr.split('-');
+            return `${d}/${m}/${y}`;
+        }
+    </script>
+</body>
+</html>
+```
